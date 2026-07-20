@@ -10,7 +10,7 @@ import {
 } from '../utils/db.js';
 
 /** 资产类别顺序 */
-export const ASSET_KEYS = ['wechat', 'alipay', 'bankCard', 'cash', 'other'];
+export const ASSET_KEYS = ['wechat', 'alipay', 'bankCard', 'cash', 'investment', 'other'];
 export const DEBT_KEYS = ['creditCard', 'otherDebt'];
 
 export const ASSET_LABELS = {
@@ -18,6 +18,7 @@ export const ASSET_LABELS = {
   alipay: '支付宝',
   bankCard: '银行卡',
   cash: '现金',
+  investment: '理财',
   other: '其他',
 };
 
