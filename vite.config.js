@@ -29,6 +29,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         // 导航请求离线回退到 index.html，保证 SPA 路由离线可用
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/sw.js/, /^\/workbox-.*\.js$/],
