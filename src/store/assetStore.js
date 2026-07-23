@@ -16,6 +16,7 @@ import {
   migrateLocalToCloud,
   pullCloudToLocal,
 } from '../utils/sync.js';
+import { ensureUnlocked } from '../utils/auth-bridge.js';
 
 /** 资产类别顺序 */
 export const ASSET_KEYS = ['wechat', 'alipay', 'bankCard', 'cash', 'investment', 'other'];
@@ -177,6 +178,7 @@ export const useAssetStore = defineStore('asset', {
      * 断网 → 只写本地，并入队
      */
     async add(data) {
+      await ensureUnlocked();
       const record = {
         ...data,
         id: data.id || uuid(),
@@ -206,6 +208,7 @@ export const useAssetStore = defineStore('asset', {
      * 断网 → 只写本地，并入队
      */
     async update(data) {
+      await ensureUnlocked();
       if (!data.id) throw new Error('缺少记录 ID，无法更新');
       const prev = this.records.find((r) => r.id === data.id);
       const record = {
@@ -240,6 +243,7 @@ export const useAssetStore = defineStore('asset', {
      * 断网 → 只删本地，并入队
      */
     async remove(id) {
+      await ensureUnlocked();
       if (this.isOnline) {
         try {
           await cloud.deleteRecord(id);
@@ -277,6 +281,7 @@ export const useAssetStore = defineStore('asset', {
      * 重置全部：先清云端无能力（无登录安全考虑），清本地并清空队列
      */
     async resetAll() {
+      await ensureUnlocked();
       await clearAllRecords();
       await clearSyncQueue();
       await this.refreshLocalState();

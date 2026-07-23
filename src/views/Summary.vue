@@ -137,10 +137,11 @@
         </div>
       </section>
 
-      <!-- 重置账本 -->
+      <!-- 重置账本（入口已屏蔽）
       <div class="reset-area">
         <button class="btn-reset" @click="onReset">重置账本（清空全部数据）</button>
       </div>
+      -->
     </template>
   </div>
 </template>
