@@ -217,7 +217,16 @@ export async function flushMathSyncQueue() {
     for (const item of queue) {
       try {
         if (item.opType === 'add') {
-          await cloud.addQuestion(item.payload)
+          const saved = await cloud.addQuestion(item.payload)
+          // 回放成功后用云端真实 id 替换本地临时记录
+          if (saved && saved.id && item.payload.id && String(saved.id) !== String(item.payload.id)) {
+            try {
+              await deleteLocalQuestion(item.payload.id)
+              await addLocalQuestion(saved)
+            } catch (e) {
+              console.warn('[math-sync] 回放校正本地失败', e)
+            }
+          }
         } else if (item.opType === 'update') {
           await cloud.updateQuestion(item.payload)
         } else if (item.opType === 'delete') {
@@ -303,20 +312,29 @@ export async function fetchQuestionById(id) {
  * 新增错题：在线直写云端 + 本地；离线入队暂存
  */
 export async function saveNewQuestion(item) {
-  const record = { ...item, id: item.id || uuid() }
-  await addLocalQuestion(record)
+  // 本地先用临时 id 落盘，保证离线立即可见
+  const tempId = item.id || uuid()
+  const localRecord = { ...item, id: tempId }
+  await addLocalQuestion(localRecord)
+
   if (isOnline()) {
     try {
-      const saved = await cloud.addQuestion(record)
-      // 用云端返回结果校正本地
-      if (saved) await putLocalQuestion(saved)
-      return saved
+      // 云端 id 由数据库自增，不传 id
+      const saved = await cloud.addQuestion(item)
+      if (saved && saved.id) {
+        // 用云端真实 id 替换本地临时记录
+        await deleteLocalQuestion(tempId)
+        await addLocalQuestion(saved)
+        return saved
+      }
+      return localRecord
     } catch (err) {
       console.warn('[math] 云端新增失败，入队暂存', err)
     }
   }
-  await enqueueMathSync('add', record)
-  return record
+  // 离线：入队，待联网回放（回放时用临时 payload，add 由云端生成 id）
+  await enqueueMathSync('add', localRecord)
+  return localRecord
 }
 
 /**

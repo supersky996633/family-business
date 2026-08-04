@@ -18,6 +18,11 @@ const routes = [
     name: 'error-review',
     component: () => import('../views/ErrorReview.vue'),
   },
+  {
+    path: '/error-all',
+    name: 'error-all',
+    component: () => import('../views/ErrorAllQuestions.vue'),
+  },
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ];
 

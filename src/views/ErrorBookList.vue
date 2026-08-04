@@ -18,6 +18,10 @@
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z"/><path d="M12 7v5l3 2"/></svg>
         <span>随机复习</span>
       </button>
+      <button class="action-btn ghost" @click="goAll" :disabled="questions.length === 0">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <span>全部题目</span>
+      </button>
       <span class="online-tag" :class="{ offline: !online }">
         {{ online ? '云端' : '离线' }}
       </span>
@@ -173,6 +177,10 @@ async function confirmDelete(q) {
 
 function goReview() {
   router.push('/error-review')
+}
+
+function goAll() {
+  router.push('/error-all')
 }
 
 function fmtDate(ts) {

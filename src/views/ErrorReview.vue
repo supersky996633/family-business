@@ -6,6 +6,7 @@
       to="/error-book"
       label="思维训练"
       icon="book"
+      back-to="/error-book"
     />
 
     <!-- 加载 -->

@@ -9,7 +9,6 @@
  *   last_review_time / next_review_time / created_at
  */
 import { getClient } from '../supabase/index.js'
-import { uuid } from '../utils/db.js'
 
 export const MATH_TABLE = 'math_error_questions'
 
@@ -72,23 +71,23 @@ export async function getQuestionById(id) {
   return fromCloud(data)
 }
 
-/** 新增一条错题（无 id 时自动生成） */
+/** 新增一条错题（id 由数据库自增，前端不指定） */
 export async function addQuestion(item) {
   const sb = getClient()
-  const payload = toCloud({ ...item, id: item.id || uuid() })
+  const payload = toCloud(item)
   const { data, error } = await sb.from(MATH_TABLE).insert(payload).select()
   if (error) throw error
-  return fromCloud((data && data[0]) || payload)
+  return fromCloud((data && data[0]) || null)
 }
 
 /** 编辑（整条覆盖）一条错题 */
 export async function updateQuestion(item) {
   const sb = getClient()
-  const { id, ...rest } = toCloud(item)
+  const rest = toCloud(item)
   const { data, error } = await sb
     .from(MATH_TABLE)
     .update(rest)
-    .eq('id', id)
+    .eq('id', item.id)
     .select()
   if (error) throw error
   return fromCloud((data && data[0]) || item)

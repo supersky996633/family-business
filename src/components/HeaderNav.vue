@@ -30,13 +30,18 @@ const props = defineProps({
   label: { type: String, default: '' },
   icon: { type: String, default: 'home' },
   btnClass: { type: String, default: '' },
+  backTo: { type: [String, Object], default: null },
 })
 
 const router = useRouter()
 
 function onBack() {
-  // 返回欢迎页：通知 App 收起路由视图并显示欢迎页
-  window.dispatchEvent(new Event('back-home'))
+  if (props.backTo) {
+    router.push(props.backTo)
+  } else {
+    // 返回欢迎页：通知 App 收起路由视图并显示欢迎页
+    window.dispatchEvent(new Event('back-home'))
+  }
 }
 </script>
 
