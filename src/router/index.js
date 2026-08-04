@@ -8,6 +8,16 @@ const routes = [
     name: 'add',
     component: () => import('../views/AddAsset.vue'),
   },
+  {
+    path: '/error-book',
+    name: 'error-book',
+    component: () => import('../views/ErrorBookList.vue'),
+  },
+  {
+    path: '/error-review',
+    name: 'error-review',
+    component: () => import('../views/ErrorReview.vue'),
+  },
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ];
 

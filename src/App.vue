@@ -14,16 +14,24 @@
               <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/>
             </svg>
           </div>
-          <h1 class="welcome-title">家庭资产管理</h1>
-          <p class="welcome-subtitle">让每一笔家庭资产清晰可见</p>
-          <button class="welcome-enter-btn" @click="onEnterClick">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="4" y="10" width="16" height="11" rx="2"/>
-              <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
-            </svg>
-            <span>进入</span>
-          </button>
-          <p class="welcome-hint">点击进入，输入密码查看</p>
+          <h1 class="welcome-title">家庭小助手</h1>
+          <p class="welcome-subtitle">让家庭事务井井有条</p>
+          <div class="welcome-entries">
+            <button class="welcome-entry-btn" @click="onEnterClick">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"/>
+              </svg>
+              <span>家庭资产管理</span>
+            </button>
+            <button class="welcome-entry-btn alt" @click="onEnterMath">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+              </svg>
+              <span>数学思维训练</span>
+            </button>
+          </div>
+          <p class="welcome-hint">家庭资产需密码解锁，数学思维训练可直接进入</p>
         </div>
       </div>
     </transition>
@@ -64,6 +72,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { useAssetStore } from './store/assetStore.js';
 import { registerOnlineListener } from './utils/sync.js';
@@ -71,6 +80,7 @@ import { isUnlocked, lock, hasPwdConfigured } from './utils/auth.js';
 import { resolveUnlock, rejectUnlock } from './utils/auth-bridge.js';
 import PwdDialog from './components/PwdDialog.vue';
 
+const router = useRouter();
 const store = useAssetStore();
 
 const pwdVisible = ref(false);
@@ -103,6 +113,19 @@ function onEnterClick() {
     return;
   }
   pwdVisible.value = true;
+}
+
+function onEnterMath() {
+  // 数学思维训练：无需密码，直接显示并跳转
+  pageUnlocked.value = true;
+  router.push('/error-book');
+}
+
+function onBackHome() {
+  // 任意模块返回欢迎页
+  router.push('/').then(() => {
+    pageUnlocked.value = false;
+  });
 }
 
 function onPwdSuccess() {
@@ -147,11 +170,13 @@ onMounted(() => {
   });
   window.addEventListener('need-unlock', onNeedUnlock);
   window.addEventListener('visibilitychange', refreshLockState);
+  window.addEventListener('back-home', onBackHome);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('need-unlock', onNeedUnlock);
   window.removeEventListener('visibilitychange', refreshLockState);
+  window.removeEventListener('back-home', onBackHome);
 });
 
 watch(
@@ -275,6 +300,40 @@ watch(
 .welcome-enter-btn:active {
   transform: scale(0.95);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+.welcome-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+.welcome-entry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 40px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  letter-spacing: 1px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.14);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.welcome-entry-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+.welcome-entry-btn.alt {
+  color: #0f4c81;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.14);
 }
 .welcome-hint {
   font-size: 12px;

@@ -2,6 +2,9 @@
   <div class="page summary-page">
     <!-- 顶部标题栏 -->
     <header class="hero-header">
+      <button class="add-fab" @click="onBackHome" aria-label="返回">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
       <span class="page-title">家庭资产汇总</span>
       <button class="add-fab" @click="goAdd" aria-label="新增">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -232,6 +235,11 @@ function netClass(v) {
 
 function goAdd() {
   router.push('/add');
+}
+
+function onBackHome() {
+  // 返回欢迎页：通知 App 收起路由视图并显示欢迎页
+  window.dispatchEvent(new Event('back-home'));
 }
 
 // 点击：若当前项已展开删除按钮，先收起；否则进入编辑
