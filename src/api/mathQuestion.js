@@ -22,7 +22,7 @@ export function fromCloud(row) {
     correctAnswer: row.correct_answer ?? '',
     childAnswer: row.child_answer ?? '',
     analysis: row.analysis ?? '',
-    knowledgePoint: row.knowledge_point ?? '',
+    knowledgePoint: Array.isArray(row.knowledge_point) ? (row.knowledge_point[0] ?? '') : (row.knowledge_point ?? ''),
     difficulty: row.difficulty ?? 1,
     reviewCount: row.review_count ?? 0,
     lastReviewTime: row.last_review_time ?? null,
@@ -34,13 +34,12 @@ export function fromCloud(row) {
 /** 前端对象 → 云端行（snake_case） */
 export function toCloud(item) {
   const out = {
-    id: item.id,
     title: item.title ?? '',
     content: item.content ?? '',
     correct_answer: item.correctAnswer ?? '',
     child_answer: item.childAnswer ?? '',
     analysis: item.analysis ?? '',
-    knowledge_point: item.knowledgePoint ?? '',
+    knowledge_point: item.knowledgePoint ? [item.knowledgePoint] : [],
     difficulty: item.difficulty ?? 1,
     review_count: item.reviewCount ?? 0,
     last_review_time: item.lastReviewTime ?? null,
