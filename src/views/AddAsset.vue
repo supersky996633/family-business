@@ -215,44 +215,93 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: calc(var(--safe-top) + 10px) 12px 10px;
-  background: #fff;
-  border-bottom: 1px solid #ebeef5;
-  margin: -12px -12px 12px;
+  padding: calc(var(--safe-top) + 14px) 16px 14px;
+  background: linear-gradient(135deg, #0f4c81 0%, #1a6fb5 50%, #2680d6 100%);
+  color: #fff;
+  margin: calc(var(--safe-top) * -1 - 12px) -12px 16px;
+  box-shadow: 0 6px 20px rgba(15, 76, 129, 0.3);
+  overflow: hidden;
+}
+ .topbar::after {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -20px;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  filter: blur(2px);
+  pointer-events: none;
 }
 .title {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
 }
 .btn-text {
   font-size: 15px;
-  color: #606266;
-  padding: 6px 4px;
+  color: rgba(255, 255, 255, 0.9);
+  padding: 6px 10px;
+  border-radius: 999px;
+  position: relative;
+  z-index: 1;
+  transition: background 0.18s;
+}
+ .btn-text:active {
+  background: rgba(255, 255, 255, 0.15);
 }
 .btn-text.primary {
-  color: var(--color-primary);
-  font-weight: 600;
+  color: #fff;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+ .btn-text.primary:active {
+  background: rgba(255, 255, 255, 0.32);
 }
 .block-title {
   font-size: 14px;
-  font-weight: 600;
-  color: #303133;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid #f0f2f5;
+  font-weight: 700;
+  color: #1f3a5f;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eaf1f8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+ .block-title::before {
+  content: '';
+  width: 4px;
+  height: 15px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #0f4c81, #42a5f5);
+  display: inline-block;
 }
 .date-input {
   width: 100%;
-  height: 40px;
-  border: 1px solid #dcdfe6;
-  border-radius: 8px;
-  padding: 0 10px;
-  background: #fafbfc;
+  height: 44px;
+  border: 1px solid #e0e8f0;
+  border-radius: 12px;
+  padding: 0 14px;
+  background: #f7faff;
   color: #303133;
+  font-weight: 600;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+ .date-input:focus {
+  border-color: #2680d6;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(38, 128, 214, 0.12);
+  outline: none;
 }
 .group-row {
-  padding: 10px 0;
-  border-bottom: 1px dashed #ebeef5;
+  padding: 12px 0;
+  border-bottom: 1px dashed #e8eef5;
 }
 .group-row:last-child {
   border-bottom: none;
@@ -261,15 +310,20 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .group-name {
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
+  color: #303133;
 }
 .group-sub {
   font-size: 13px;
-  color: var(--color-primary);
+  color: #2680d6;
+  font-weight: 600;
+  background: rgba(38, 128, 214, 0.08);
+  padding: 2px 10px;
+  border-radius: 999px;
 }
 .pair-inputs {
   display: grid;
@@ -279,26 +333,36 @@ onMounted(() => {
 .pair-item label {
   display: block;
   font-size: 12px;
-  color: #909399;
-  margin-bottom: 4px;
+  color: #7a8fab;
+  margin-bottom: 5px;
+  font-weight: 500;
 }
 .footer-bar {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 10px 12px calc(var(--safe-bottom) + 10px);
-  background: #fff;
-  border-top: 1px solid #ebeef5;
+  padding: 12px 16px calc(var(--safe-bottom) + 12px);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid #e8eef5;
+  box-shadow: 0 -4px 16px rgba(15, 76, 129, 0.06);
   z-index: 20;
 }
 .btn-save {
   width: 100%;
-  height: 44px;
-  border-radius: 22px;
-  background: var(--color-primary);
+  height: 48px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #0f4c81 0%, #1a6fb5 50%, #2680d6 100%);
   color: #fff;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 6px 18px rgba(15, 76, 129, 0.3);
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+ .btn-save:active {
+  transform: scale(0.97);
+  box-shadow: 0 3px 12px rgba(15, 76, 129, 0.3);
 }
 </style>

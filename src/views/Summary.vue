@@ -434,31 +434,63 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: calc(var(--safe-top) + 14px) 16px 14px;
-  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  padding: calc(var(--safe-top) + 16px) 18px 16px;
+  background: linear-gradient(135deg, #0f4c81 0%, #1a6fb5 50%, #2680d6 100%);
   color: #fff;
-  margin: calc(var(--safe-top) * -1 - 12px) -12px 14px;
-  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.25);
+  margin: calc(var(--safe-top) * -1 - 12px) -12px 16px;
+  box-shadow: 0 6px 20px rgba(15, 76, 129, 0.3);
+  overflow: hidden;
+}
+ .hero-header::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -30px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  filter: blur(2px);
+  pointer-events: none;
+}
+ .hero-header::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: 40%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(79, 195, 247, 0.12);
+  filter: blur(3px);
+  pointer-events: none;
 }
 .page-title {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  position: relative;
+  z-index: 1;
 }
 .add-fab {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.2);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(4px);
-  transition: transform 0.15s, background 0.15s;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  transition: transform 0.18s, background 0.18s;
+  position: relative;
+  z-index: 1;
 }
 .add-fab:active {
-  transform: scale(0.9);
+  transform: scale(0.88);
   background: rgba(255, 255, 255, 0.35);
 }
 
@@ -471,44 +503,76 @@ onBeforeUnmount(() => {
 
 /* ===== 家庭总览英雄卡 ===== */
 .hero-card {
-  background: linear-gradient(135deg, #e8f1ff 0%, #f3f8ff 50%, #eef6ff 100%);
-  border: 1px solid #d6e6ff;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 14px;
-  box-shadow: 0 4px 14px rgba(25, 118, 210, 0.1);
+  background: linear-gradient(135deg, #0f4c81 0%, #1a6fb5 60%, #2680d6 100%);
+  border-radius: 18px;
+  padding: 20px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(15, 76, 129, 0.22);
+  position: relative;
+  overflow: hidden;
+}
+ .hero-card::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+ .hero-card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(79, 195, 247, 0.1);
+  pointer-events: none;
 }
 .hero-card-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
 }
 .hero-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
-  color: #1f3a5f;
+  color: #fff;
+  letter-spacing: 0.5px;
 }
 .hero-date {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 11px;
-  color: #6b8aaf;
-  background: rgba(25, 118, 210, 0.08);
-  padding: 3px 8px;
-  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 12px;
 }
 .hero-empty {
   text-align: center;
-  color: #7a8fab;
-  padding: 16px 0;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 20px 0;
   font-size: 13px;
+  position: relative;
+  z-index: 1;
 }
 .hero-body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  position: relative;
+  z-index: 1;
 }
 .hero-net {
   flex: 1.4;
@@ -516,26 +580,29 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  border-radius: 12px;
-  padding: 18px 8px;
-  box-shadow: 0 3px 12px rgba(25, 118, 210, 0.12);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 14px;
+  padding: 20px 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 .hn-label {
   font-size: 12px;
-  color: #909399;
+  color: rgba(255, 255, 255, 0.7);
 }
 .hn-value {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 800;
-  color: var(--color-primary);
+  color: #fff;
   letter-spacing: 0.5px;
   margin: 4px 0 2px;
   font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 .hn-sub {
   font-size: 11px;
-  color: #b0b8c4;
+  color: rgba(255, 255, 255, 0.55);
 }
 .hero-side {
   display: flex;
@@ -547,18 +614,21 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  border-radius: 12px;
-  padding: 12px 10px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  padding: 14px 10px;
 }
 .hs-label {
   font-size: 11px;
-  color: #909399;
+  color: rgba(255, 255, 255, 0.7);
 }
 .hs-value {
   font-size: 17px;
   font-weight: 700;
   margin-top: 2px;
+  color: #fff;
   font-variant-numeric: tabular-nums;
 }
 
@@ -572,10 +642,10 @@ onBeforeUnmount(() => {
 /* ===== 通用卡片 ===== */
 .card {
   background: #fff;
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 18px;
   margin-bottom: 14px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 16px rgba(15, 76, 129, 0.06), 0 1px 4px rgba(0, 0, 0, 0.03);
 }
 .card-title {
   font-size: 14px;
@@ -616,10 +686,14 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 12px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #f7f9fc 0%, #eef2f7 100%);
-  border-left: 3px solid #1976d2;
+  padding: 13px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f7faff 0%, #eef4fb 100%);
+  border-left: 3px solid #2680d6;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+ .ov-item:active {
+  transform: scale(0.97);
 }
 .ov-item.is-debt {
   border-left-color: var(--color-red);
@@ -684,12 +758,12 @@ onBeforeUnmount(() => {
 .history-item {
   position: relative;
   z-index: 1;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: 14px;
   background: #fff;
-  border: 1px solid #eef0f4;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
-  transition: transform 0.2s ease;
+  border: 1px solid #eef2f7;
+  box-shadow: 0 2px 8px rgba(15, 76, 129, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   touch-action: pan-y;
 }
 .hi-head {
@@ -706,8 +780,8 @@ onBeforeUnmount(() => {
 .hi-badge {
   font-size: 13px;
   font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 20px;
+  padding: 5px 14px;
+  border-radius: 999px;
   background: #f0f2f5;
   color: #606266;
   font-variant-numeric: tabular-nums;
@@ -742,10 +816,10 @@ onBeforeUnmount(() => {
 }
 .tag {
   font-size: 11px;
-  color: #606266;
-  background: #f4f6f9;
-  padding: 3px 8px;
-  border-radius: 6px;
+  color: #5a6b80;
+  background: #f1f5fa;
+  padding: 4px 9px;
+  border-radius: 999px;
   font-variant-numeric: tabular-nums;
 }
 .tag-red {

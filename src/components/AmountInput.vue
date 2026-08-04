@@ -55,18 +55,20 @@ function onInput(e) {
 <style scoped>
 .amount-input {
   width: 100%;
-  height: 38px;
-  padding: 0 10px;
-  border: 1px solid #dcdfe6;
-  border-radius: 8px;
-  background: #fafbfc;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #e0e8f0;
+  border-radius: 10px;
+  background: #f7faff;
   color: #303133;
   text-align: right;
   outline: none;
-  transition: border-color 0.2s;
+  font-weight: 600;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 .amount-input:focus {
-  border-color: var(--color-primary);
+  border-color: #2680d6;
   background: #fff;
+  box-shadow: 0 0 0 3px rgba(38, 128, 214, 0.12);
 }
 </style>

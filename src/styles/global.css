@@ -47,10 +47,10 @@ button {
 
 .section-card {
   background: #fff;
-  border-radius: 12px;
-  padding: 14px;
-  margin-bottom: 12px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(15, 76, 129, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .muted {
