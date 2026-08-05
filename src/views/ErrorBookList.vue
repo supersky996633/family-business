@@ -8,23 +8,39 @@
       icon="home"
     />
 
-    <!-- 操作栏：新增 + 复习入口 -->
-    <div class="action-bar">
-      <button class="action-btn primary" @click="openAdd">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        <span>录入题目</span>
+    <!-- 三个入口卡片 -->
+    <div class="entry-grid">
+      <button class="entry-card add" @click="openAdd">
+        <div class="entry-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <span class="entry-label">录入题目</span>
+        <span class="entry-sub">添加新题目</span>
       </button>
-      <button class="action-btn ghost" @click="goReview" :disabled="questions.length === 0">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z"/><path d="M12 7v5l3 2"/></svg>
-        <span>随机复习</span>
+      <button class="entry-card" :disabled="questions.length === 0" @click="goReview">
+        <div class="entry-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z"/><path d="M12 7v5l3 2"/></svg>
+        </div>
+        <span class="entry-label">随机复习</span>
+        <span class="entry-sub">{{ questions.length ? questions.length + ' 题可练' : '暂无题目' }}</span>
       </button>
-      <button class="action-btn ghost" @click="goAll" :disabled="questions.length === 0">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        <span>全部题目</span>
+      <button class="entry-card" :disabled="questions.length === 0" @click="goAll">
+        <div class="entry-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </div>
+        <span class="entry-label">全部题目</span>
+        <span class="entry-sub">{{ questions.length ? '查看 ' + questions.length + ' 题' : '暂无题目' }}</span>
       </button>
-      <span class="online-tag" :class="{ offline: !online }">
-        {{ online ? '云端' : '离线' }}
-      </span>
+    </div>
+
+    <!-- 状态行：在线/离线 + 手动刷新 -->
+    <div class="status-row">
+      <button class="status-tag" :class="{ offline: !online }" @click="refresh">
+        <svg class="status-dot" viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><circle cx="12" cy="12" r="7"/></svg>
+        <span>{{ online ? '已连接云端' : '离线模式' }}</span>
+        <svg class="refresh-ico" :class="{ spinning: refreshing }" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>
+      </button>
+      <span class="count-tag">共 {{ questions.length }} 题</span>
     </div>
 
     <!-- 知识点筛选 -->
@@ -113,6 +129,7 @@ const filterKp = ref('')
 const online = ref(typeof navigator !== 'undefined' ? navigator.onLine : true)
 const dialogVisible = ref(false)
 const editing = ref(null)
+const refreshing = ref(false)
 
 // 全部知识点（去重，按出现顺序）
 const knowledgePoints = computed(() => {
@@ -183,6 +200,17 @@ function goAll() {
   router.push('/error-all')
 }
 
+async function refresh() {
+  if (refreshing.value) return
+  refreshing.value = true
+  try {
+    await load()
+    ElMessage.success(online.value ? '已刷新' : '已读取本地')
+  } finally {
+    refreshing.value = false
+  }
+}
+
 function fmtDate(ts) {
   if (!ts) return ''
   const d = new Date(Number(ts))
@@ -215,55 +243,115 @@ onBeforeUnmount(() => {
   padding-bottom: calc(var(--safe-bottom) + 28px);
 }
 
-/* 操作栏 */
-.action-bar {
-  display: flex;
-  align-items: center;
+/* 入口卡片 */
+.entry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   margin-bottom: 14px;
 }
-.action-btn {
+.entry-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 16px 6px 12px;
+  border-radius: 16px;
+  color: #0f4c81;
+  background: #fff;
+  border: 1px solid #e8f0fb;
+  box-shadow: 0 4px 18px rgba(15, 76, 129, 0.12);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.entry-card:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 10px rgba(15, 76, 129, 0.16);
+}
+.entry-card:disabled {
+  opacity: 0.5;
+}
+.entry-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #2680d6;
+  box-shadow: 0 4px 12px rgba(15, 76, 129, 0.18);
+}
+.entry-card.add {
+  background: linear-gradient(135deg, #0f4c81 0%, #1a6fb5 50%, #2680d6 100%);
+  border-color: transparent;
+}
+.entry-card.add .entry-icon {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+.entry-card.add .entry-label {
+  color: #fff;
+}
+.entry-card.add .entry-sub {
+  color: rgba(255, 255, 255, 0.8);
+}
+.entry-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f3a5f;
+}
+.entry-sub {
+  font-size: 11px;
+  color: #7a8fab;
+}
+
+/* 状态行 */
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.status-tag {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 999px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  transition: transform 0.18s, box-shadow 0.18s;
-}
-.action-btn:active {
-  transform: scale(0.95);
-}
-.action-btn.primary {
-  background: linear-gradient(135deg, #0f4c81 0%, #1a6fb5 50%, #2680d6 100%);
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(15, 76, 129, 0.28);
-}
-.action-btn.ghost {
-  background: #fff;
-  color: #2680d6;
-  border: 1px solid #d6e6ff;
-  box-shadow: 0 2px 8px rgba(38, 128, 214, 0.08);
-}
-.action-btn.ghost:disabled {
-  opacity: 0.45;
-  color: #c0c4cc;
-  background: #f7f8fa;
-}
-.online-tag {
-  margin-left: auto;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 999px;
   background: rgba(46, 158, 91, 0.12);
   color: #2e9e5b;
+  transition: background 0.15s;
 }
-.online-tag.offline {
+.status-tag:active {
+  background: rgba(46, 158, 91, 0.22);
+}
+.status-tag.offline {
   background: rgba(224, 82, 77, 0.12);
   color: #e0524d;
+}
+.status-dot {
+  flex-shrink: 0;
+}
+.refresh-ico {
+  flex-shrink: 0;
+}
+.refresh-ico.spinning {
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.count-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: #606266;
+  background: #f4f6f9;
+  padding: 6px 12px;
+  border-radius: 999px;
 }
 
 /* 筛选条 */
