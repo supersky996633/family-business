@@ -73,7 +73,7 @@
         </div>
         <div class="qc-content">{{ q.content }}</div>
         <div class="qc-tags">
-          <span v-if="q.knowledgePoint" class="tag kp">{{ q.knowledgePoint }}</span>
+          <span class="tag kp">{{ kpText(q.knowledgePoint) }}</span>
           <span class="tag review">复习 {{ q.reviewCount || 0 }} 次</span>
           <span v-if="q.lastReviewTime" class="tag time">{{ fmtDate(q.lastReviewTime) }}</span>
         </div>
@@ -131,11 +131,18 @@ const dialogVisible = ref(false)
 const editing = ref(null)
 const refreshing = ref(false)
 
+function kpText(v) {
+  if (!v) return '默认'
+  if (Array.isArray(v)) return v[0] || '默认'
+  return v || '默认'
+}
+
 // 全部知识点（去重，按出现顺序）
 const knowledgePoints = computed(() => {
   const set = new Set()
   questions.value.forEach((q) => {
-    if (q.knowledgePoint) set.add(q.knowledgePoint)
+    const v = kpText(q.knowledgePoint)
+    if (v) set.add(v)
   })
   return [...set]
 })
@@ -143,7 +150,7 @@ const knowledgePoints = computed(() => {
 // 筛选后的列表
 const filtered = computed(() => {
   if (!filterKp.value) return questions.value
-  return questions.value.filter((q) => q.knowledgePoint === filterKp.value)
+  return questions.value.filter((q) => kpText(q.knowledgePoint) === filterKp.value)
 })
 
 async function load() {

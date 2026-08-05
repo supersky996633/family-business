@@ -22,7 +22,7 @@ export function fromCloud(row) {
     correctAnswer: row.correct_answer ?? '',
     childAnswer: row.child_answer ?? '',
     analysis: row.analysis ?? '',
-    knowledgePoint: row.knowledge_point ?? '',
+    knowledgePoint: Array.isArray(row.knowledge_point) ? (row.knowledge_point[0] ?? '') : (row.knowledge_point ?? ''),
     difficulty: row.difficulty ?? 1,
     reviewCount: row.review_count ?? 0,
     lastReviewTime: row.last_review_time ?? null,

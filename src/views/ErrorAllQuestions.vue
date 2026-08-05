@@ -95,7 +95,9 @@ const openItems = reactive({})
 const groups = computed(() => {
   const map = new Map()
   for (const q of questions.value) {
-    const kp = q.knowledgePoint || '未分类'
+    let kp = q.knowledgePoint
+    if (!kp || (Array.isArray(kp) && kp.length === 0)) kp = '默认'
+    if (Array.isArray(kp)) kp = kp[0] || '默认'
     if (!map.has(kp)) map.set(kp, [])
     map.get(kp).push(q)
   }

@@ -33,8 +33,8 @@
         <div class="rc-text">{{ current.content }}</div>
       </div>
 
-      <div v-if="current.knowledgePoint || current.difficulty" class="rc-meta">
-        <span v-if="current.knowledgePoint" class="tag kp">{{ current.knowledgePoint }}</span>
+      <div class="rc-meta">
+        <span class="tag kp">{{ kpText(current.knowledgePoint) }}</span>
         <span class="tag diff">
           难度
           <svg v-for="d in 5" :key="d" viewBox="0 0 24 24" width="12" height="12" :fill="current.difficulty >= d ? '#f6a609' : 'none'" stroke="#f6a609" stroke-width="1.5" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 20.02 12 17.77 5.82 20.02 7 14.14 2 9.27 8.91 8.26"/></svg>
@@ -108,6 +108,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
+
+function kpText(v) {
+  if (!v) return '默认'
+  if (Array.isArray(v)) return v[0] || '默认'
+  return v || '默认'
+}
 import HeaderNav from '../components/HeaderNav.vue'
 import { fetchAllQuestions, saveEditQuestion } from '../utils/db-local.js'
 
